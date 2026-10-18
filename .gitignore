@@ -1,0 +1,4 @@
+# 原始資料不上傳：content.md 含明文信箱，assets/ 是未壓縮的原圖
+data/
+assets/
+PROMPT.md

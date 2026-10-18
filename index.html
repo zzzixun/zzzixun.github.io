@@ -1,0 +1,384 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>尤梓薰 Yu Tzu-Hsun</title>
+<meta name="description" content="尤梓薰（Yu Tzu-Hsun）個人網站：醫學影像分割、深度學習與主動輪廓模型研究。">
+<link rel="icon" href="img/profile.webp">
+<script>
+  // 在畫面繪製前套用語言與主題，避免閃爍
+  try {
+    var l = new URLSearchParams(location.search).get("lang") || localStorage.getItem("lang");
+    if (l === "en") { document.documentElement.dataset.lang = "en"; document.documentElement.lang = "en"; }
+    var t = localStorage.getItem("theme");
+    if (t === "dark" || t === "light") document.documentElement.dataset.theme = t;
+  } catch (e) {}
+</script>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="nav">
+  <div class="nav-inner">
+    <a class="brand" href="#top"><span data-l="zh">尤梓薰</span><span data-l="en">Yu Tzu-Hsun</span></a>
+    <button class="icon-btn menu-btn" id="menu-btn" aria-label="選單 Menu" aria-expanded="false">☰</button>
+    <nav id="nav-links">
+      <a href="#research"><span data-l="zh">研究</span><span data-l="en">Research</span></a>
+      <a href="#projects"><span data-l="zh">專案</span><span data-l="en">Projects</span></a>
+      <a href="#experience"><span data-l="zh">經歷</span><span data-l="en">Experience</span></a>
+      <a href="#skills"><span data-l="zh">技能</span><span data-l="en">Skills</span></a>
+      <a href="#education"><span data-l="zh">學歷</span><span data-l="en">Education</span></a>
+      <a href="#life"><span data-l="zh">生活</span><span data-l="en">Life</span></a>
+    </nav>
+    <div class="toggles">
+      <button class="icon-btn" id="lang-btn" aria-label="切換語言 Switch language"><span data-l="zh">EN</span><span data-l="en">中</span></button>
+      <button class="icon-btn" id="theme-btn" aria-label="切換深色模式 Toggle dark mode">◐</button>
+    </div>
+  </div>
+</header>
+
+<main id="top">
+
+<!-- ========== 首頁 ========== -->
+<section class="hero wrap">
+  <div class="hero-text">
+    <h1>
+      <span data-l="zh">尤梓薰 <small>Yu Tzu-Hsun</small></span>
+      <span data-l="en">Yu Tzu-Hsun <small>尤梓薰</small></span>
+    </h1>
+    <p class="tagline">
+      <span data-l="zh">臺大工程科學及海洋工程學系 碩士生｜醫學影像分割・深度學習</span>
+      <span data-l="en">M.S. student, Engineering Science &amp; Ocean Engineering, NTU | Medical image segmentation · Deep learning</span>
+    </p>
+    <p data-l="zh">具資訊管理與工程科學雙重背景，碩士研究結合深度學習與主動輪廓模型做醫學影像分割；擅長用 Python 把重複的工作自動化、用嚴謹的實驗設計回答問題。也是熱愛挑戰自我的三鐵與戶外運動愛好者。</p>
+    <p data-l="en">With a background in both information management and engineering science, my master's research combines deep learning with active contour models for medical image segmentation. I like using Python to automate repetitive work and rigorous experimental design to answer questions. I'm also a triathlete and outdoor-sports enthusiast who loves a challenge.</p>
+    <div class="links">
+      <a class="btn" href="https://github.com/zzzixun" target="_blank" rel="noopener">GitHub</a>
+      <a class="btn" href="https://www.linkedin.com/in/%E6%A2%93%E8%96%B0-%E5%B0%A4-06a637292/" target="_blank" rel="noopener">LinkedIn</a>
+      <button class="btn btn-primary" id="email-btn" type="button">Email</button>
+    </div>
+  </div>
+  <img class="avatar" src="img/profile.webp" width="480" height="480" alt="尤梓薰 Yu Tzu-Hsun">
+</section>
+
+<!-- ========== 研究 ========== -->
+<section id="research" class="section wrap">
+  <h2><span data-l="zh">研究</span><span data-l="en">Research</span></h2>
+
+  <p class="eyebrow"><span data-l="zh">碩士論文</span><span data-l="en">Master's thesis</span></p>
+  <h3 class="thesis-title">
+    <span data-l="zh">以卷積神經網路學習 Chan–Vese 能量的空間變化係數場：應用於表皮內神經纖維分割</span>
+    <span data-l="en">Learning Spatially Varying Coefficient Fields of the Chan–Vese Energy with a Convolutional Network for Intraepidermal Nerve Fibre Segmentation</span>
+  </h3>
+  <p class="meta">
+    <span data-l="zh">國立臺灣大學 工程科學及海洋工程學系 · 指導教授：張恆華 教授</span>
+    <span data-l="en">Department of Engineering Science and Ocean Engineering, National Taiwan University · Advisor: Prof. Herng-Hua Chang</span>
+    <span class="badge"><span data-l="zh">論文撰寫中，準備口試</span><span data-l="en">Thesis in preparation; preparing for the oral defence</span></span>
+  </p>
+  <p class="lead">
+    <span data-l="zh">將 Chan–Vese 主動輪廓的 30 步水平集演化展開為可微分層，以卷積網路逐像素預測其四個能量係數，用於醫學影像中極細神經纖維的分割。</span>
+    <span data-l="en">Unrolled 30 steps of Chan–Vese level-set evolution into a differentiable layer and trained a CNN to predict its four energy coefficients per pixel, for segmenting extremely thin nerve fibres in medical images.</span>
+  </p>
+
+  <div class="metrics">
+    <div class="metric">
+      <div class="num">70.63<small>%</small></div>
+      <div class="label"><span data-l="zh">DSC，438 張影像五折交叉驗證</span><span data-l="en">DSC, five-fold cross-validation on 438 images</span></div>
+    </div>
+    <div class="metric">
+      <div class="num">+18.71</div>
+      <div class="label"><span data-l="zh">個百分點，相較固定參數 Chan–Vese</span><span data-l="en">points over fixed-parameter Chan–Vese</span></div>
+    </div>
+    <div class="metric">
+      <div class="num">+16.52</div>
+      <div class="label"><span data-l="zh">係數由全域純量改為逐像素；七種架構全距僅 0.49</span><span data-l="en">scalar → per-pixel coefficients; seven architectures differ by only 0.49</span></div>
+    </div>
+    <div class="metric">
+      <div class="num">43</div>
+      <div class="label"><span data-l="zh">種模型設定的系統性消融</span><span data-l="en">model configurations in a systematic ablation</span></div>
+    </div>
+  </div>
+
+  <div class="compare" role="table" aria-label="DSC (%)">
+    <div role="row"><span role="cell"><span data-l="zh">固定參數 Chan–Vese</span><span data-l="en">Fixed-parameter Chan–Vese</span></span><span role="cell">51.93</span></div>
+    <div role="row"><span role="cell"><span data-l="zh">U-Net（相同架構）</span><span data-l="en">U-Net (same architecture)</span></span><span role="cell">69.64</span></div>
+    <div role="row" class="ours"><span role="cell"><span data-l="zh">本研究</span><span data-l="en">Proposed</span></span><span role="cell">70.63</span></div>
+    <p class="compare-cap">DSC (%)</p>
+  </div>
+
+  <h4><span data-l="zh">要解決的問題</span><span data-l="en">The problem</span></h4>
+  <p data-l="zh">表皮內神經纖維密度是診斷小纖維神經病變的重要指標，但人工標註耗時。自動分割有三項困難：纖維極細（連通元件像素數中位數僅 14）、影像強度不均、像素級標註昂貴。</p>
+  <p data-l="en">Intraepidermal nerve fibre density is a key indicator for diagnosing small-fibre neuropathy, but manual annotation is slow. Automatic segmentation is hard: fibres are extremely thin (median component of 14 pixels), intensity is non-uniform, and pixel-level labels are expensive.</p>
+
+  <h4><span data-l="zh">方法</span><span data-l="en">Approach</span></h4>
+  <div class="method">
+    <figure class="diagram">
+      <div class="diagram-scroll">
+      <svg viewBox="0 0 700 560" role="img" aria-label="方法流程圖 Method overview">
+        <defs>
+          <marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+            <path d="M0,0 L10,5 L0,10 z" fill="currentColor"/>
+          </marker>
+        </defs>
+        <g class="boxes">
+          <rect x="20"  y="20"  width="200" height="80"/>
+          <rect x="260" y="20"  width="240" height="80"/>
+          <rect x="260" y="135" width="240" height="100"/>
+          <rect x="260" y="270" width="240" height="66" class="hl"/>
+          <rect x="260" y="372" width="240" height="66"/>
+          <rect x="260" y="474" width="240" height="66"/>
+          <rect x="20"  y="235" width="200" height="66" class="dash"/>
+          <rect x="20"  y="318" width="200" height="66" class="dash"/>
+          <rect x="20"  y="474" width="200" height="66" class="dash"/>
+        </g>
+        <g class="arrows" marker-end="url(#ah)">
+          <line x1="220" y1="60"  x2="258" y2="60"/>
+          <line x1="380" y1="100" x2="380" y2="133"/>
+          <line x1="380" y1="235" x2="380" y2="268"/>
+          <line x1="220" y1="280" x2="258" y2="296"/>
+          <line x1="220" y1="340" x2="258" y2="312"/>
+          <line x1="380" y1="336" x2="380" y2="370"/>
+          <line x1="380" y1="438" x2="380" y2="472"/>
+          <line x1="220" y1="507" x2="258" y2="507"/>
+          <path d="M500,507 H610 V60 H502" fill="none"/>
+        </g>
+        <rect class="label-bg" x="528" y="238" width="164" height="86"/>
+        <g class="t">
+          <text x="380" y="67" class="t1">U-Net</text>
+          <text x="380" y="198" class="t2">μ(x,y), ν(x,y),</text>
+          <text x="380" y="220" class="t2">λ₁(x,y), λ₂(x,y)</text>
+        </g>
+        <g class="t" data-l="zh">
+          <text x="120" y="55" class="t1">區塊影像</text>
+          <text x="120" y="80" class="t2">CLAHE、正規化</text>
+          <text x="380" y="168" class="t1">係數場</text>
+          <text x="120" y="263" class="t1">初始輪廓</text>
+          <text x="120" y="288" class="t2">作為演化起點</text>
+          <text x="120" y="346" class="t1">表皮遮罩</text>
+          <text x="120" y="371" class="t2">限制演化範圍</text>
+          <text x="380" y="310" class="t1">Chan–Vese 演化</text>
+          <text x="380" y="412" class="t1">區塊影像分割結果</text>
+          <text x="120" y="502" class="t1">真值遮罩</text>
+          <text x="120" y="527" class="t2">僅用於計算損失</text>
+          <text x="380" y="514" class="t1">戴斯損失</text>
+          <text x="610" y="276" class="t2">經演化層反向傳播</text>
+          <text x="610" y="298" class="t2">更新 U-Net 權重</text>
+        </g>
+        <g class="t" data-l="en">
+          <text x="120" y="55" class="t1">Image patch</text>
+          <text x="120" y="80" class="t2">CLAHE, normalisation</text>
+          <text x="380" y="168" class="t1">Coefficient fields</text>
+          <text x="120" y="263" class="t1">Initial contour</text>
+          <text x="120" y="288" class="t2">evolution start</text>
+          <text x="120" y="346" class="t1">Epidermis mask</text>
+          <text x="120" y="371" class="t2">constrains evolution</text>
+          <text x="380" y="310" class="t1">Chan–Vese evolution</text>
+          <text x="380" y="412" class="t1">Patch segmentation</text>
+          <text x="120" y="502" class="t1">Ground-truth mask</text>
+          <text x="120" y="527" class="t2">used only for the loss</text>
+          <text x="380" y="514" class="t1">Dice loss</text>
+          <text x="610" y="266" class="t2">Backpropagate through</text>
+          <text x="610" y="288" class="t2">the evolution layer to</text>
+          <text x="610" y="310" class="t2">update U-Net weights</text>
+        </g>
+      </svg>
+      </div>
+      <figcaption><span data-l="zh">方法流程：U-Net 預測係數場，經可微分 Chan–Vese 演化得到分割結果，以戴斯損失端到端訓練。</span><span data-l="en">Overview: the U-Net predicts coefficient fields, a differentiable Chan–Vese evolution produces the segmentation, and the whole system is trained end-to-end with a Dice loss.</span></figcaption>
+    </figure>
+    <ol class="steps">
+      <li>
+        <span data-l="zh">以 U-Net 為骨幹，為每個像素預測 Chan–Vese 能量的四個係數（長度、面積、前景、背景項），取代傳統方法的全域固定參數。</span>
+        <span data-l="en">A U-Net backbone predicts all four Chan–Vese coefficients (length, area, foreground, background) at every pixel, replacing the global fixed parameters of the classical model.</span>
+      </li>
+      <li>
+        <span data-l="zh">將水平集演化實作為可微分的 PyTorch 層，梯度可穿過 30 步演化回傳，整個系統端到端訓練。</span>
+        <span data-l="en">Implemented level-set evolution as a differentiable PyTorch layer so gradients flow back through all 30 steps, enabling end-to-end training.</span>
+      </li>
+      <li>
+        <span data-l="zh">以兩個設計軸組織實驗：係數場的空間解析度（全域純量至逐像素，共六級）與係數值域的參數化方式（五種），共比較 43 種模型設定。</span>
+        <span data-l="en">Organised experiments along two design axes — spatial resolution of the coefficient fields (six levels, scalar to per-pixel) and value-range parameterisation (five variants) — across 43 model configurations.</span>
+      </li>
+    </ol>
+  </div>
+
+  <h4><span data-l="zh">重點成果</span><span data-l="en">Key results</span></h4>
+  <p class="muted">
+    <span data-l="zh">439 張免疫螢光影像，其中 438 張以五折交叉驗證評估整張影像的分割結果。</span>
+    <span data-l="en">439 immunofluorescence images; 438 evaluated on full images with five-fold cross-validation.</span>
+  </p>
+  <ul class="bullets">
+    <li><span data-l="zh">DSC 較固定參數 Chan–Vese 方法提升 18.71 個百分點，較相同架構的 U-Net 提升 1.00 個百分點，兩者皆達統計顯著。</span><span data-l="en">DSC improved by 18.71 points over fixed-parameter Chan–Vese and by 1.00 point over a same-architecture U-Net, both statistically significant.</span></li>
+    <li><span data-l="zh">係數場的空間自由度是效能主因：由全域純量提升至逐像素，DSC 提升 16.52 個百分點；而七種網路架構參數量相差 155 倍，DSC 全距僅 0.49。</span><span data-l="en">Spatial freedom of the coefficients drives performance: scalar → per-pixel adds 16.52 DSC points, whereas seven architectures spanning 155× in parameter count differ by only 0.49.</span></li>
+    <li><span data-l="zh">移除係數的值域上界使 DSC 提升 3.09 個百分點。</span><span data-l="en">Removing the upper bound on the coefficients added 3.09 DSC points.</span></li>
+    <li><span data-l="zh">以空間翻轉實驗證明效能來自係數場與影像的空間對位，而非參數數量。</span><span data-l="en">A spatial-flip experiment showed the gain comes from spatial alignment between coefficient fields and the image, not from parameter count.</span></li>
+    <li><span data-l="zh">演化層推論每個 64 × 64 區塊約 0.45 ms；最輕量的變體只需主方法 1/88 的參數量，效能差距在訓練變異範圍內。</span><span data-l="en">The evolution layer adds about 0.45 ms per 64 × 64 patch; the lightest variant uses 1/88 of the parameters with performance within training noise.</span></li>
+  </ul>
+
+  <details class="rigor">
+    <summary><span data-l="zh">研究嚴謹度</span><span data-l="en">Methodological rigour</span></summary>
+    <ul class="bullets">
+      <li><span data-l="zh">以六次獨立訓練量測訓練變異（全圖 DSC 標準差 0.150），訂定 0.45 個百分點的判讀門檻，避免把隨機種子造成的差異誤判為方法優劣。</span><span data-l="en">Measured run-to-run variance from six independent trainings (DSC s.d. 0.150) and set a 0.45-point decision threshold, so seed noise is not mistaken for a real improvement.</span></li>
+      <li><span data-l="zh">發現同設定僅種子不同的兩個模型，配對 t 檢定即可達 p = 9.8×10⁻⁵，因此架構層級的主張改以多種子比較為準。</span><span data-l="en">Showed that two identical configurations differing only in seed reach p = 9.8×10⁻⁵ under a paired t-test, and therefore based architecture-level claims on multi-seed comparisons.</span></li>
+      <li><span data-l="zh">主動報告負面結果：測試時增強、係數場平滑等嘗試皆未奏效，並分析其原因。</span><span data-l="en">Reported negative results (test-time augmentation, coefficient smoothing) with root-cause analysis.</span></li>
+    </ul>
+  </details>
+
+  <ul class="tags">
+    <li data-l="zh">醫學影像分割</li><li data-l="zh">主動輪廓模型</li><li data-l="zh">Chan–Vese</li><li data-l="zh">水平集方法</li><li data-l="zh">可微分 PDE</li><li data-l="zh">深度學習</li>
+    <li data-l="en">medical image segmentation</li><li data-l="en">active contours</li><li data-l="en">Chan–Vese</li><li data-l="en">level-set methods</li><li data-l="en">differentiable PDE</li><li data-l="en">deep learning</li>
+  </ul>
+</section>
+
+<!-- ========== 專案 ========== -->
+<section id="projects" class="section wrap">
+  <h2><span data-l="zh">專案</span><span data-l="en">Projects</span></h2>
+  <div class="cards">
+    <article class="card">
+      <div class="card-head">
+        <h3><span data-l="zh">成績管理自動化腳本</span><span data-l="en">Excel Automation Pipeline</span></h3>
+        <span class="badge done"><span data-l="zh">已完成</span><span data-l="en">Completed</span></span>
+      </div>
+      <p data-l="zh">為解決助教登記成績耗時且易錯的問題，以 Python 自動比對學生名單與作業繳交紀錄，並匯出至 Excel，省去大量人工核對時間。</p>
+      <p data-l="en">Grade entry for TAs was slow and error-prone, so I wrote a Python script that automatically matches the class roster against assignment submissions and exports the results to Excel, removing most of the manual cross-checking.</p>
+      <ul class="tags"><li>Python</li><li>pandas</li></ul>
+    </article>
+    <article class="card">
+      <div class="card-head">
+        <h3><span data-l="zh">外食族熱量搜尋神器</span><span data-l="en">Fast-Food Calorie Tracker</span></h3>
+        <span class="badge plan"><span data-l="zh">規劃中</span><span data-l="en">Planned</span></span>
+      </div>
+      <p data-l="zh">針對飲控與健身族群，預計整合麥當勞、摩斯漢堡等連鎖品牌的營養標示資料，以爬蟲抓取數據，並提供可依熱量、蛋白質條件篩選的互動介面。</p>
+      <p data-l="en">For people managing their diet and training: will scrape nutrition data from chains such as McDonald's and MOS Burger and provide an interactive interface for filtering by calories and protein.</p>
+      <ul class="tags"><li>Python</li><li>Selenium / BeautifulSoup</li><li>Streamlit</li></ul>
+    </article>
+    <article class="card">
+      <div class="card-head">
+        <h3><span data-l="zh">影像濾波與分割（研究所課程專案）</span><span data-l="en">Image Filtering &amp; Segmentation (graduate course project)</span></h3>
+        <span class="badge done"><span data-l="zh">已完成</span><span data-l="en">Completed</span></span>
+      </div>
+      <p data-l="zh">以 MATLAB 實作 Alpha-trimmed mean filter 等濾波技術與影像分割演算法，進行雜訊處理與特徵強化。</p>
+      <p data-l="en">Implemented filters such as the alpha-trimmed mean filter, along with image segmentation algorithms, in MATLAB for noise reduction and feature enhancement.</p>
+      <ul class="tags"><li>MATLAB</li></ul>
+    </article>
+  </div>
+</section>
+
+<!-- ========== 經歷 ========== -->
+<section id="experience" class="section wrap">
+  <h2><span data-l="zh">經歷</span><span data-l="en">Experience</span></h2>
+  <ol class="timeline">
+    <li>
+      <h3><span data-l="zh">國立臺灣大學｜課程教學助理（TA）</span><span data-l="en">National Taiwan University | Teaching Assistant</span></h3>
+      <ul class="bullets">
+        <li><span data-l="zh"><b>職場倫理與職場精神</b>：協助課堂討論流程順暢，並協助教授核對解答；主動開發 Python 腳本自動對照學生繳交紀錄並寫入 Excel 成績單，大幅提升行政效率並確保 100% 登錄準確率。</span><span data-l="en"><b>Workplace Ethics and Professionalism</b>: kept class discussions running smoothly and helped the professor check answer keys; on my own initiative, wrote a Python script that matches student submission records and writes them into the Excel gradebook, greatly cutting admin time with 100% entry accuracy.</span></li>
+        <li><span data-l="zh"><b>資料結構</b>：協助課程教學，解答學生程式疑問。</span><span data-l="en"><b>Data Structures</b>: supported teaching and answered students' programming questions.</span></li>
+      </ul>
+    </li>
+    <li>
+      <h3><span data-l="zh">國中數學教師／家教</span><span data-l="en">Junior-High Maths Teacher / Tutor</span></h3>
+      <ul class="bullets">
+        <li><span data-l="zh">善於將複雜的邏輯概念拆解為易懂的步驟，具備良好的溝通引導能力與耐心。</span><span data-l="en">Broke complex logical concepts into easy-to-follow steps; a patient, clear communicator who guides students to their own answers.</span></li>
+      </ul>
+    </li>
+  </ol>
+
+  <h4><span data-l="zh">社群領導</span><span data-l="en">Community Leadership</span></h4>
+  <ol class="timeline">
+    <li>
+      <h3><span data-l="zh">教會小組長</span><span data-l="en">Church Small-Group Leader</span></h3>
+      <ul class="bullets">
+        <li><span data-l="zh">負責凝聚團隊，傾聽成員需求並協助解決人際問題，培養溝通與協調能力。</span><span data-l="en">Build team cohesion, listen to members' needs and help resolve interpersonal issues.</span></li>
+        <li><span data-l="zh">定期籌辦聚會活動，具備時程控管與活動企劃執行能力。</span><span data-l="en">Organise regular gatherings, handling scheduling, planning and execution.</span></li>
+      </ul>
+    </li>
+  </ol>
+</section>
+
+<!-- ========== 技能 ========== -->
+<section id="skills" class="section wrap">
+  <h2><span data-l="zh">技能</span><span data-l="en">Skills</span></h2>
+  <div class="skill-grid">
+    <div>
+      <h3><span data-l="zh">程式語言</span><span data-l="en">Languages</span></h3>
+      <ul class="tags"><li><span data-l="zh">Python（主力）</span><span data-l="en">Python (primary)</span></li><li>MATLAB</li><li>Bash</li><li>HTML/CSS</li></ul>
+    </div>
+    <div>
+      <h3><span data-l="zh">深度學習</span><span data-l="en">Deep Learning</span></h3>
+      <ul class="tags"><li>PyTorch</li><li>U-Net</li><li><span data-l="zh">可微分 PDE 層</span><span data-l="en">Differentiable PDE layers</span></li><li><span data-l="zh">五折交叉驗證</span><span data-l="en">Five-fold cross-validation</span></li><li><span data-l="zh">消融實驗設計</span><span data-l="en">Ablation study design</span></li></ul>
+    </div>
+    <div>
+      <h3><span data-l="zh">影像處理</span><span data-l="en">Image Processing</span></h3>
+      <ul class="tags"><li><span data-l="zh">水平集方法／主動輪廓模型（Chan–Vese）</span><span data-l="en">Level-set methods / active contours (Chan–Vese)</span></li><li>CLAHE</li><li>OpenCV</li><li>Alpha-trimmed mean filter</li></ul>
+    </div>
+    <div>
+      <h3><span data-l="zh">資料分析與統計</span><span data-l="en">Data Analysis &amp; Statistics</span></h3>
+      <ul class="tags"><li>NumPy</li><li>pandas</li><li>SciPy</li><li>Matplotlib</li><li><span data-l="zh">配對 t 檢定</span><span data-l="en">Paired t-test</span></li><li><span data-l="zh">Wilcoxon 檢定</span><span data-l="en">Wilcoxon test</span></li><li><span data-l="zh">多種子變異分析</span><span data-l="en">Multi-seed variance analysis</span></li></ul>
+    </div>
+    <div>
+      <h3><span data-l="zh">工具與環境</span><span data-l="en">Tools &amp; Environment</span></h3>
+      <ul class="tags"><li>Linux</li><li>Git</li><li>tmux</li><li><span data-l="zh">GPU 訓練</span><span data-l="en">GPU training</span></li><li><span data-l="zh">可續跑的批次實驗管線</span><span data-l="en">Resumable batch experiment pipelines</span></li></ul>
+    </div>
+    <div>
+      <h3><span data-l="zh">自動化</span><span data-l="en">Automation</span></h3>
+      <ul class="tags"><li><span data-l="zh">Excel 自動化腳本</span><span data-l="en">Excel automation scripts</span></li><li><span data-l="zh">資料爬蟲（Selenium、BeautifulSoup）</span><span data-l="en">Web scraping (Selenium, BeautifulSoup)</span></li><li><span data-l="zh">Pandoc／python-docx 文件自動排版</span><span data-l="en">Automated document builds (Pandoc / python-docx)</span></li><li>Streamlit</li></ul>
+    </div>
+  </div>
+</section>
+
+<!-- ========== 學歷 ========== -->
+<section id="education" class="section wrap">
+  <h2><span data-l="zh">學歷</span><span data-l="en">Education</span></h2>
+  <ol class="timeline">
+    <li>
+      <h3><span data-l="zh">國立臺灣大學｜工程科學及海洋工程學系 碩士班（資訊科技組）</span><span data-l="en">National Taiwan University | M.S., Engineering Science and Ocean Engineering (Information Technology Division)</span></h3>
+      <p class="period"><span data-l="zh">2024.09 – 就讀中</span><span data-l="en">Sep 2024 – present</span></p>
+      <ul class="bullets">
+        <li><span data-l="zh">指導教授：張恆華 教授</span><span data-l="en">Advisor: Prof. Herng-Hua Chang</span></li>
+        <li><span data-l="zh">研究領域：醫學影像分割、深度學習、主動輪廓模型（水平集方法）</span><span data-l="en">Research areas: medical image segmentation, deep learning, active contour models (level-set methods)</span></li>
+        <li><span data-l="zh">碩士論文：<a href="#research">《以卷積神經網路學習 Chan–Vese 能量的空間變化係數場：應用於表皮內神經纖維分割》</a>（論文撰寫中，準備口試）</span><span data-l="en">Thesis: <a href="#research"><i>Learning Spatially Varying Coefficient Fields of the Chan–Vese Energy with a Convolutional Network for Intraepidermal Nerve Fibre Segmentation</i></a> (in preparation; preparing for the oral defence)</span></li>
+      </ul>
+    </li>
+    <li>
+      <h3><span data-l="zh">國立彰化師範大學｜資訊管理學系 學士</span><span data-l="en">National Changhua University of Education | Bachelor's, Information Management</span></h3>
+      <p class="period"><span data-l="zh">2018.09 – 2022.01</span><span data-l="en">Sep 2018 – Jan 2022</span></p>
+      <ul class="bullets">
+        <li><span data-l="zh">系排第三名畢業</span><span data-l="en">Graduated ranked 3rd in the department</span></li>
+      </ul>
+    </li>
+  </ol>
+</section>
+
+<!-- ========== 生活 ========== -->
+<section id="life" class="section wrap">
+  <h2><span data-l="zh">生活</span><span data-l="en">Life</span></h2>
+  <div class="life-text">
+    <div>
+      <h3><span data-l="zh">鐵人三項與長跑</span><span data-l="en">Triathlon &amp; Distance Running</span></h3>
+      <p data-l="zh">保持規律的健身、跑步與游泳訓練，並參與三鐵及路跑賽事；把備賽所需的紀律與時間規劃，用在長期的研究與專案開發上。</p>
+      <p data-l="en">I train regularly in the gym, on the road and in the pool, and race in triathlons and road runs. The discipline and time planning that race preparation demands carry straight over into long-term research and projects.</p>
+    </div>
+    <div>
+      <h3><span data-l="zh">破浪精神</span><span data-l="en">Embracing Challenges</span></h3>
+      <p data-l="zh">熱愛挑戰自我，計畫嘗試滑雪、泛舟與衝浪等戶外運動，享受踏出舒適圈、克服新問題的過程。</p>
+      <p data-l="en">I love pushing my limits and plan to try skiing, white-water rafting and surfing — I enjoy stepping out of my comfort zone and working through new problems.</p>
+    </div>
+  </div>
+  <div class="gallery">
+    <figure class="tall"><img src="img/triathlon.webp" width="563" height="1000" loading="lazy" alt="LAVA 花蓮太平洋鐵人賽頒獎台 / LAVA Hualien triathlon podium"><figcaption><span data-l="zh">LAVA 花蓮太平洋鐵人賽・TryTri 女子組第一名</span><span data-l="en">LAVA Hualien Pacific Triathlon — 1st place, TryTri women's division</span></figcaption></figure>
+    <figure><img src="img/roadrace.webp" width="750" height="1000" loading="lazy" alt="2026 世界海洋日路跑 / 2026 World Oceans Day Run"><figcaption><span data-l="zh">2026 國家地理世界海洋日路跑</span><span data-l="en">2026 National Geographic World Oceans Day Run</span></figcaption></figure>
+    <figure><img src="img/workout.webp" width="1000" height="1000" loading="lazy" alt="重量訓練 / Strength training"><figcaption><span data-l="zh">重訓日常</span><span data-l="en">Strength training</span></figcaption></figure>
+    <figure><img src="img/church1.webp" width="1000" height="750" loading="lazy" alt="教會小組 / Church small group"><figcaption><span data-l="zh">教會小組</span><span data-l="en">Church small group</span></figcaption></figure>
+    <figure><img src="img/church2.webp" width="750" height="1000" loading="lazy" alt="教會小組聚會 / Church small-group gathering"><figcaption><span data-l="zh">小組聚會</span><span data-l="en">Small-group gathering</span></figcaption></figure>
+  </div>
+</section>
+
+</main>
+
+<footer class="footer wrap">
+  <p>© 2026 <span data-l="zh">尤梓薰</span><span data-l="en">Yu Tzu-Hsun</span> · <a href="https://github.com/zzzixun" target="_blank" rel="noopener">GitHub</a></p>
+</footer>
+
+<script src="main.js"></script>
+</body>
+</html>
