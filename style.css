@@ -154,17 +154,18 @@ p { margin: 0 0 1rem; }
 .method { display: grid; grid-template-columns: 1.15fr 1fr; gap: 2rem; align-items: start; }
 .method > * { min-width: 0; }
 .diagram { margin: 0; background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 1rem; }
-.diagram-scroll { overflow-x: auto; }
-.diagram svg { width: 100%; min-width: 440px; height: auto; color: var(--fg); }
+.diagram svg { display: block; width: 100%; max-width: 460px; height: auto; margin: 0 auto; color: var(--fg); }
 .diagram figcaption { font-size: .85rem; color: var(--muted); margin-top: .6rem; line-height: 1.6; }
 .boxes rect { fill: var(--card); stroke: currentColor; stroke-width: 2; }
 .boxes rect.dash { stroke-dasharray: 7 5; }
 .boxes rect.hl { fill: var(--accent-soft); stroke: var(--accent); }
+.boxes polygon { fill: var(--card); stroke: currentColor; stroke-width: 2; }
 .arrows line, .arrows path { stroke: currentColor; stroke-width: 2; }
 .label-bg { fill: var(--card); }
 .t text { fill: currentColor; text-anchor: middle; font-family: inherit; }
 .t .t1 { font-size: 20px; }
 .t .t2 { font-size: 15px; }
+.t .i { font-style: italic; }
 
 .steps { margin: 0; padding: 0; list-style: none; counter-reset: step; }
 .steps li { counter-increment: step; position: relative; padding-left: 2.6rem; margin-bottom: 1.2rem; }
@@ -188,6 +189,10 @@ p { margin: 0 0 1rem; }
 .card-body { display: flex; flex-direction: column; }
 .card-shot img { display: block; width: 100%; height: auto; border-radius: 8px; border: 1px solid var(--line); }
 .card .links { margin-top: 1rem; }
+.story { grid-column: 1 / -1; margin-top: 0; }
+.story-list { margin: 0; padding-left: 1.4rem; display: grid; gap: .9rem; }
+.story-list li::marker { color: var(--accent); font-weight: 700; }
+.story-list p { margin: .25rem 0 0; color: var(--muted); flex: none; }
 
 /* ---------- 經歷／學歷時間軸 ---------- */
 .timeline { list-style: none; margin: 0; padding: 0 0 0 1.4rem; border-left: 2px solid var(--line); }

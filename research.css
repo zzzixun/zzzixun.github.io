@@ -1,0 +1,168 @@
+/* 研究區塊新增元件。色彩一律沿用 site-style.css 的 token，深色模式自動跟著切換 */
+
+.rx-h { display: flex; align-items: center; gap: .6rem; font-size: 1.3rem; margin: 3rem 0 .75rem; }
+.rx-no {
+  flex: none; width: 1.9rem; height: 1.9rem; border-radius: 50%;
+  display: grid; place-items: center; font-size: .95rem;
+  background: var(--accent-soft); color: var(--accent);
+}
+.rx-note { margin-top: .75rem; font-size: .92rem; }
+.rx-small { font-size: .85rem; margin: .75rem 0 0; }
+
+/* ---------- ① 拖曳比較 ---------- */
+.rx-tabs { display: flex; gap: .4rem; margin: .5rem 0 .75rem; }
+.rx-tab {
+  font: inherit; font-size: .92rem; padding: .35rem .9rem; cursor: pointer;
+  border: 1px solid var(--line); border-radius: 999px; background: var(--card); color: var(--muted);
+}
+.rx-tab.is-on { background: var(--accent); border-color: var(--accent); color: #fff; }
+.rx-slider {
+  position: relative; border-radius: 10px; overflow: hidden; background: #000;
+  border: 1px solid var(--line); touch-action: pan-y; user-select: none;
+}
+.rx-slider img { width: 100%; height: auto; display: block; }
+.rx-s-clip { position: absolute; inset: 0; clip-path: inset(0 calc(100% - var(--pos)) 0 0); }
+.rx-s-clip img { width: 100%; }
+.rx-s-handle {
+  position: absolute; top: 0; bottom: 0; left: var(--pos); width: 2px; margin-left: -1px;
+  background: #fff; box-shadow: 0 0 0 1px rgba(0,0,0,.4); pointer-events: none;
+}
+.rx-s-handle::after {
+  content: "⟷"; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+  width: 2rem; height: 2rem; border-radius: 50%; display: grid; place-items: center;
+  background: #fff; color: #111; font-size: .9rem; box-shadow: 0 1px 4px rgba(0,0,0,.4);
+}
+.rx-s-tag {
+  position: absolute; top: .5rem; padding: .15rem .55rem; border-radius: 6px;
+  background: rgba(0,0,0,.65); color: #fff; font-size: .8rem; pointer-events: none;
+  font-variant-numeric: tabular-nums;
+}
+.rx-s-tag.left { left: .5rem; }
+.rx-s-tag.right { right: .5rem; }
+.rx-slider input[type=range] {
+  position: absolute; inset: 0; width: 100%; height: 100%; margin: 0;
+  opacity: 0; cursor: ew-resize;
+}
+.rx-legend { display: flex; flex-wrap: wrap; gap: .4rem 1.2rem; margin: .6rem 0 0; font-size: .9rem; color: var(--muted); }
+.rx-legend > span { display: inline-flex; align-items: center; gap: .4rem; }
+.sw { width: .85rem; height: .85rem; border-radius: 3px; display: inline-block; }
+.sw.y { background: #ffdd00; } .sw.r { background: #e62828; } .sw.g { background: #28c83c; }
+
+.rx-zooms { display: grid; grid-template-columns: auto repeat(3, 1fr); gap: .5rem .6rem; margin-top: 1.25rem; align-items: center; }
+.rx-zooms .rl { font-size: .85rem; color: var(--muted); writing-mode: vertical-rl; text-align: center; letter-spacing: .15em; }
+.rx-zooms figure { margin: 0; }
+.rx-zooms img { width: 100%; border-radius: 6px; }
+.rx-zooms figcaption { font-size: .8rem; color: var(--muted); text-align: center; margin-top: .2rem; font-variant-numeric: tabular-nums; }
+.rx-zooms figcaption b { color: var(--fg); }
+
+/* ---------- ② 處理流程 ---------- */
+.rx-pipe { list-style: none; margin: 1rem 0 0; padding: 0; counter-reset: pipe; }
+.rx-pipe > li {
+  counter-increment: pipe; position: relative;
+  display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 1.5rem; align-items: center;
+  padding: 1.25rem 0 1.25rem 2.25rem; border-left: 2px solid var(--line); margin-left: .9rem;
+}
+.rx-pipe > li::before {
+  content: counter(pipe); position: absolute; left: -.95rem; top: 1.3rem;
+  width: 1.8rem; height: 1.8rem; border-radius: 50%; display: grid; place-items: center;
+  background: var(--bg); border: 2px solid var(--accent); color: var(--accent); font-weight: 700; font-size: .85rem;
+}
+.rx-pipe > li:last-child { border-left-color: transparent; }
+.rx-pipe h4 { font-size: 1.05rem; margin-bottom: .4rem; }
+.rx-pipe p { margin: 0; color: var(--muted); }
+.rx-pipe-imgs { display: grid; gap: .5rem; }
+.rx-pipe-imgs.four { grid-template-columns: repeat(4, 1fr); }
+.rx-pipe-imgs.four.fields { grid-template-columns: repeat(2, 1fr); }
+.rx-pipe-imgs.two, .rx-pipe-imgs.evo { grid-template-columns: repeat(2, 1fr); max-width: 360px; }
+.rx-pipe-imgs figure { margin: 0; }
+.rx-pipe-imgs img { width: 100%; border-radius: 6px; border: 1px solid var(--line); background: #000; }
+.rx-pipe-imgs.fields img { background: #fff; }
+.rx-pipe-imgs img, .rx-zooms img, #cv-demo canvas { image-rendering: pixelated; }
+.rx-pipe-imgs figcaption { font-size: .8rem; color: var(--muted); text-align: center; margin-top: .2rem; font-variant-numeric: tabular-nums; }
+.rx-pipe-imgs figcaption b { color: var(--fg); }
+
+.rx-gauss { width: 100%; max-width: 360px; }
+.rx-gauss .pb { fill: var(--accent-soft); stroke: var(--accent); stroke-width: 1.5; fill-opacity: .6; }
+.rx-gauss .g1, .rx-gauss .g2 { fill: none; stroke: var(--accent); stroke-width: 2; }
+.rx-gauss .g2 { stroke: var(--muted); }
+.rx-gauss text { fill: var(--muted); font-size: 13px; }
+
+/* ---------- ③ 互動 demo ---------- */
+.rx-demo { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 1.25rem; margin-top: 1rem; }
+.rx-demo-presets { display: flex; flex-wrap: wrap; align-items: center; gap: .5rem; margin-bottom: 1rem; }
+.rx-demo-presets .btn { font-size: .88rem; padding: .35rem .8rem; cursor: pointer; }
+.rx-demo-main { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: 1.5rem; }
+.rx-canvases { display: grid; grid-template-columns: 1fr 1fr; gap: .6rem; }
+.rx-canvases figure, .rx-fields figure { margin: 0; }
+.rx-canvases canvas { width: 100%; aspect-ratio: 1; border-radius: 6px; display: block; background: #000; }
+.rx-canvases figcaption, .rx-fields figcaption { font-size: .8rem; color: var(--muted); text-align: center; margin-top: .2rem; }
+.rx-progress { height: 4px; background: var(--line); border-radius: 2px; margin: .75rem 0; overflow: hidden; }
+#cv-bar { height: 100%; width: 0; background: var(--accent); transition: width .06s linear; }
+.rx-readout { display: flex; flex-wrap: wrap; align-items: center; gap: .6rem 1rem; font-variant-numeric: tabular-nums; }
+.rx-readout .btn { cursor: pointer; }
+.rx-readout b { font-size: 1.1rem; }
+#cv-demo .when-play { display: none; }
+#cv-demo.is-playing .when-play { display: inline; }
+#cv-demo.is-playing .when-stop { display: none; }
+
+.rx-modes { border: 0; padding: 0; margin: 0 0 1rem; display: grid; gap: .35rem; }
+.rx-modes legend { font-weight: 600; margin-bottom: .35rem; }
+.rx-modes label { display: flex; gap: .45rem; align-items: center; cursor: pointer; }
+.rx-modes input { accent-color: var(--accent); }
+.rx-sliders { display: grid; gap: .55rem; margin-bottom: 1rem; }
+.rx-sliders label { display: grid; grid-template-columns: 1fr auto; gap: .1rem .5rem; font-size: .92rem; }
+.rx-sliders output { font-variant-numeric: tabular-nums; color: var(--accent); font-weight: 600; }
+.rx-sliders input { grid-column: 1 / -1; width: 100%; accent-color: var(--accent); }
+.rx-fields { display: grid; grid-template-columns: repeat(4, 1fr); gap: .4rem; }
+.rx-fields canvas { width: 100%; aspect-ratio: 1; border-radius: 4px; border: 1px solid var(--line); display: block; }
+.rx-fields-cap { font-size: .8rem; margin: .4rem 0 0; }
+.rx-demo-notes { margin-top: 1.25rem; padding-top: 1rem; border-top: 1px solid var(--line); }
+.rx-demo-notes > div { margin: 0; }
+
+/* 依模式顯示對應的控制項與說明 */
+#cv-demo .only-global, #cv-demo .only-pixel, #cv-demo .only-flip { display: none; }
+#cv-demo[data-mode=global] .only-global,
+#cv-demo[data-mode=pixel] .only-pixel,
+#cv-demo[data-mode=flip] .only-flip { display: block; }
+#cv-demo[data-mode=global] .rx-sliders.only-global,
+#cv-demo[data-mode=pixel] .rx-sliders.only-pixel,
+#cv-demo[data-mode=flip] .rx-sliders.only-pixel { display: grid; }
+
+/* ---------- ④ 圖表 ---------- */
+.rx-charts { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; margin-top: 1rem; }
+.rx-chart { display: flex; flex-direction: column; margin: 0; background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 1.1rem 1.1rem .9rem; }
+.rx-chart h4 { font-size: 1rem; margin: 0 0 .75rem; }
+.rx-chart figcaption { font-size: .85rem; margin-top: .5rem; }
+.rx-svg { position: relative; }
+.rx-svg svg { width: 100%; height: auto; display: block; overflow: visible; }
+.rx-svg .grid { stroke: var(--line); stroke-width: 1; }
+.rx-svg .axis-t { fill: var(--muted); font-size: 11px; font-variant-numeric: tabular-nums; }
+.rx-svg .lbl { fill: var(--fg); font-size: 12px; font-weight: 600; font-variant-numeric: tabular-nums; }
+.rx-svg .line { fill: none; stroke: var(--accent); stroke-width: 2; }
+.rx-svg .dot { fill: var(--accent); stroke: var(--card); stroke-width: 2; }
+.rx-svg .dot.alt { fill: var(--muted); }
+.rx-svg .bar { fill: var(--muted); opacity: .55; }
+.rx-svg .bar.main { fill: var(--accent); opacity: 1; }
+.rx-svg .bar.bad { fill: var(--plan); opacity: 1; }
+.rx-svg .band { fill: var(--accent-soft); }
+.rx-svg .hit { fill: transparent; cursor: default; }
+.rx-tip {
+  position: absolute; pointer-events: none; z-index: 2; transform: translate(-50%, -110%);
+  background: var(--fg); color: var(--bg); font-size: .8rem; padding: .3rem .55rem; border-radius: 6px;
+  white-space: nowrap; opacity: 0; transition: opacity .1s;
+}
+.rx-tip.on { opacity: 1; }
+
+/* ---------- ⑤ 沒成功的嘗試 ---------- */
+.rx-fails { margin: .5rem 0 0; padding-left: 1.2rem; display: grid; gap: .6rem; }
+.rx-fails li { color: var(--muted); }
+.rx-fails b { color: var(--fg); }
+
+/* ---------- 手機 ---------- */
+@media (max-width: 760px) {
+  .rx-pipe > li { grid-template-columns: 1fr; gap: .9rem; padding-left: 1.6rem; }
+  .rx-pipe-imgs.four:not(.fields) { grid-template-columns: repeat(2, 1fr); }
+  .rx-demo { padding: 1rem; }
+  .rx-demo-main, .rx-charts { grid-template-columns: 1fr; }
+  .rx-zooms { gap: .35rem .4rem; }
+}

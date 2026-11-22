@@ -16,6 +16,7 @@
   } catch (e) {}
 </script>
 <link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="research.css">
 </head>
 <body>
 
@@ -77,22 +78,22 @@
     <span class="badge"><span data-l="zh">論文撰寫中，準備口試</span><span data-l="en">Thesis in preparation; preparing for the oral defence</span></span>
   </p>
   <p class="lead">
-    <span data-l="zh">將 Chan–Vese 主動輪廓的 30 步水平集演化展開為可微分層，以卷積網路逐像素預測其四個能量係數，用於醫學影像中極細神經纖維的分割。</span>
-    <span data-l="en">Unrolled 30 steps of Chan–Vese level-set evolution into a differentiable layer and trained a CNN to predict its four energy coefficients per pixel, for segmenting extremely thin nerve fibres in medical images.</span>
+    <span data-l="zh">傳統的 Chan–Vese 主動輪廓對整張影像只用一組固定參數，遇到亮度不均的影像就會失效。我讓卷積網路<strong>為每個像素各自決定</strong>四個能量係數，再把 30 步水平集演化做成可微分層，端到端訓練，用來分割只有幾個像素寬的神經纖維。</span>
+    <span data-l="en">Classical Chan–Vese active contours use one fixed set of parameters for the whole image and fail when brightness is uneven. I let a CNN <strong>choose all four energy coefficients separately at every pixel</strong>, and unrolled 30 level-set steps into a differentiable layer trained end to end, to segment nerve fibres only a few pixels wide.</span>
   </p>
 
   <div class="metrics">
     <div class="metric">
-      <div class="num">70.63<small>%</small></div>
+      <div class="num">70.86<small>%</small></div>
       <div class="label"><span data-l="zh">DSC，438 張影像五折交叉驗證</span><span data-l="en">DSC, five-fold cross-validation on 438 images</span></div>
     </div>
     <div class="metric">
-      <div class="num">+18.71</div>
+      <div class="num">+18.93</div>
       <div class="label"><span data-l="zh">個百分點，相較固定參數 Chan–Vese</span><span data-l="en">points over fixed-parameter Chan–Vese</span></div>
     </div>
     <div class="metric">
-      <div class="num">+16.52</div>
-      <div class="label"><span data-l="zh">係數由全域純量改為逐像素；七種架構全距僅 0.49</span><span data-l="en">scalar → per-pixel coefficients; seven architectures differ by only 0.49</span></div>
+      <div class="num">+16.87</div>
+      <div class="label"><span data-l="zh">係數由全域純量改為逐像素；七種架構全距僅 0.56</span><span data-l="en">scalar → per-pixel coefficients; seven architectures differ by only 0.56</span></div>
     </div>
     <div class="metric">
       <div class="num">43</div>
@@ -102,89 +103,129 @@
 
   <div class="compare" role="table" aria-label="DSC (%)">
     <div role="row"><span role="cell"><span data-l="zh">固定參數 Chan–Vese</span><span data-l="en">Fixed-parameter Chan–Vese</span></span><span role="cell">51.93</span></div>
-    <div role="row"><span role="cell"><span data-l="zh">U-Net（相同架構）</span><span data-l="en">U-Net (same architecture)</span></span><span role="cell">69.64</span></div>
-    <div role="row" class="ours"><span role="cell"><span data-l="zh">本研究</span><span data-l="en">Proposed</span></span><span role="cell">70.63</span></div>
+    <div role="row"><span role="cell"><span data-l="zh">U-Net（相同架構）</span><span data-l="en">U-Net (same architecture)</span></span><span role="cell">69.79</span></div>
+    <div role="row" class="ours"><span role="cell"><span data-l="zh">本研究</span><span data-l="en">Proposed</span></span><span role="cell">70.86</span></div>
     <p class="compare-cap">DSC (%)</p>
   </div>
 
+  <!-- ① 結果對照 -->
+  <h3 class="rx-h"><span class="rx-no">1</span><span data-l="zh">分割結果：拖曳比較</span><span data-l="en">Results: drag to compare</span></h3>
+  <p class="muted">
+    <span data-l="zh">左右拖曳分隔線，比較固定參數 Chan–Vese（基線）與本方法在同一張原圖上的結果。除了最好的一張，也放上 DSC 最接近全體中位數的一張，看典型表現。</span>
+    <span data-l="en">Drag the divider to compare fixed-parameter Chan–Vese (baseline) with the proposed method on the same full image. Besides the best case, the image closest to the median DSC is shown for typical performance.</span>
+  </p>
+  <div class="rx-tabs" role="tablist">
+    <button class="rx-tab is-on" data-case="best" role="tab" aria-selected="true"><span data-l="zh">最佳案例</span><span data-l="en">Best case</span></button>
+    <button class="rx-tab" data-case="median" role="tab" aria-selected="false"><span data-l="zh">中位案例</span><span data-l="en">Median case</span></button>
+  </div>
+  <div class="rx-slider" id="rx-slider" style="--pos:50%">
+    <img class="rx-s-ours" id="rx-ours" src="img/research/best-whole-ours.webp" alt="本方法 Proposed" width="1600" height="224">
+    <div class="rx-s-clip"><img id="rx-base" src="img/research/best-whole-base.webp" alt="基線 Baseline" width="1600" height="224"></div>
+    <div class="rx-s-handle" aria-hidden="true"></div>
+    <span class="rx-s-tag left"><span data-l="zh">基線</span><span data-l="en">Baseline</span> · <b id="rx-dsc-base">65.74%</b></span>
+    <span class="rx-s-tag right"><span data-l="zh">本方法</span><span data-l="en">Proposed</span> · <b id="rx-dsc-ours">89.72%</b></span>
+    <input type="range" min="0" max="100" value="50" aria-label="比較位置 Comparison position">
+  </div>
+  <p class="rx-legend">
+    <span><i class="sw y"></i><span data-l="zh">正確</span><span data-l="en">Correct</span></span>
+    <span><i class="sw r"></i><span data-l="zh">漏檢</span><span data-l="en">Missed</span></span>
+    <span><i class="sw g"></i><span data-l="zh">誤檢</span><span data-l="en">False positive</span></span>
+  </p>
+  <div class="rx-zooms" id="rx-zooms"></div>
+  <p class="muted rx-note" id="rx-case-note"></p>
+
   <h4><span data-l="zh">要解決的問題</span><span data-l="en">The problem</span></h4>
-  <p data-l="zh">表皮內神經纖維密度是診斷小纖維神經病變的重要指標，但人工標註耗時。自動分割有三項困難：纖維極細（連通元件像素數中位數僅 14）、影像強度不均、像素級標註昂貴。</p>
-  <p data-l="en">Intraepidermal nerve fibre density is a key indicator for diagnosing small-fibre neuropathy, but manual annotation is slow. Automatic segmentation is hard: fibres are extremely thin (median component of 14 pixels), intensity is non-uniform, and pixel-level labels are expensive.</p>
+  <p data-l="zh">表皮內神經纖維密度是診斷小纖維神經病變的重要指標，但人工標註耗時，像素級標註也很昂貴，因此需要可靠的自動分割。</p>
+  <p data-l="en">Intraepidermal nerve fibre density is a key indicator for diagnosing small-fibre neuropathy, but manual annotation is slow and pixel-level labels are expensive, so reliable automatic segmentation is needed.</p>
 
   <h4><span data-l="zh">方法</span><span data-l="en">Approach</span></h4>
   <div class="method">
     <figure class="diagram">
-      <div class="diagram-scroll">
-      <svg viewBox="0 0 700 560" role="img" aria-label="方法流程圖 Method overview">
+      <svg viewBox="0 0 620 870" role="img" aria-label="方法流程圖 Method overview">
         <defs>
           <marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
             <path d="M0,0 L10,5 L0,10 z" fill="currentColor"/>
           </marker>
         </defs>
         <g class="boxes">
-          <rect x="20"  y="20"  width="200" height="80"/>
-          <rect x="260" y="20"  width="240" height="80"/>
-          <rect x="260" y="135" width="240" height="100"/>
-          <rect x="260" y="270" width="240" height="66" class="hl"/>
-          <rect x="260" y="372" width="240" height="66"/>
-          <rect x="260" y="474" width="240" height="66"/>
-          <rect x="20"  y="235" width="200" height="66" class="dash"/>
-          <rect x="20"  y="318" width="200" height="66" class="dash"/>
-          <rect x="20"  y="474" width="200" height="66" class="dash"/>
+          <rect x="20"  y="20"  width="200" height="70"/>
+          <rect x="260" y="20"  width="240" height="70"/>
+          <rect x="260" y="120" width="240" height="110"/>
+          <rect x="260" y="260" width="240" height="66" class="hl"/>
+          <rect x="260" y="356" width="240" height="66"/>
+          <rect x="260" y="452" width="240" height="66"/>
+          <rect x="260" y="548" width="240" height="70"/>
+          <polygon points="380,648 520,700 380,752 240,700"/>
+          <rect x="260" y="790" width="240" height="60" rx="14"/>
+          <rect x="20"  y="218" width="200" height="66" class="dash"/>
+          <rect x="20"  y="302" width="200" height="66" class="dash"/>
+          <rect x="20"  y="452" width="200" height="66" class="dash"/>
         </g>
         <g class="arrows" marker-end="url(#ah)">
-          <line x1="220" y1="60"  x2="258" y2="60"/>
-          <line x1="380" y1="100" x2="380" y2="133"/>
-          <line x1="380" y1="235" x2="380" y2="268"/>
-          <line x1="220" y1="280" x2="258" y2="296"/>
-          <line x1="220" y1="340" x2="258" y2="312"/>
-          <line x1="380" y1="336" x2="380" y2="370"/>
-          <line x1="380" y1="438" x2="380" y2="472"/>
-          <line x1="220" y1="507" x2="258" y2="507"/>
-          <path d="M500,507 H610 V60 H502" fill="none"/>
+          <line x1="220" y1="55"  x2="258" y2="55"/>
+          <line x1="380" y1="90"  x2="380" y2="118"/>
+          <line x1="380" y1="230" x2="380" y2="258"/>
+          <line x1="220" y1="262" x2="258" y2="282"/>
+          <line x1="220" y1="324" x2="258" y2="304"/>
+          <line x1="380" y1="326" x2="380" y2="354"/>
+          <line x1="380" y1="422" x2="380" y2="450"/>
+          <line x1="220" y1="485" x2="258" y2="485"/>
+          <line x1="380" y1="518" x2="380" y2="546"/>
+          <line x1="380" y1="618" x2="380" y2="646"/>
+          <line x1="380" y1="752" x2="380" y2="788"/>
+          <path d="M520,700 H590 V55 H502" fill="none"/>
         </g>
-        <rect class="label-bg" x="528" y="238" width="164" height="86"/>
+        <rect class="label-bg" x="533" y="688" width="44" height="24"/>
+        <rect class="label-bg" x="358" y="758" width="44" height="22"/>
         <g class="t">
-          <text x="380" y="67" class="t1">U-Net</text>
-          <text x="380" y="198" class="t2">μ(x,y), ν(x,y),</text>
-          <text x="380" y="220" class="t2">λ₁(x,y), λ₂(x,y)</text>
+          <text x="380" y="62" class="t1">U-Net</text>
         </g>
         <g class="t" data-l="zh">
-          <text x="120" y="55" class="t1">區塊影像</text>
-          <text x="120" y="80" class="t2">CLAHE、正規化</text>
-          <text x="380" y="168" class="t1">係數場</text>
-          <text x="120" y="263" class="t1">初始輪廓</text>
-          <text x="120" y="288" class="t2">作為演化起點</text>
-          <text x="120" y="346" class="t1">表皮遮罩</text>
-          <text x="120" y="371" class="t2">限制演化範圍</text>
-          <text x="380" y="310" class="t1">Chan–Vese 演化</text>
-          <text x="380" y="412" class="t1">區塊影像分割結果</text>
-          <text x="120" y="502" class="t1">真值遮罩</text>
-          <text x="120" y="527" class="t2">僅用於計算損失</text>
-          <text x="380" y="514" class="t1">戴斯損失</text>
-          <text x="610" y="276" class="t2">經演化層反向傳播</text>
-          <text x="610" y="298" class="t2">更新 U-Net 權重</text>
+          <text x="120" y="50" class="t1">區塊影像</text>
+          <text x="120" y="75" class="t2">CLAHE、正規化</text>
+          <text x="380" y="153" class="t1">係數場</text>
+          <text x="380" y="183" class="t2"><tspan class="i">μ</tspan>(<tspan class="i">x</tspan>, <tspan class="i">y</tspan>)、<tspan class="i">ν</tspan>(<tspan class="i">x</tspan>, <tspan class="i">y</tspan>)、</text>
+          <text x="380" y="208" class="t2"><tspan class="i">λ</tspan>₁(<tspan class="i">x</tspan>, <tspan class="i">y</tspan>)、<tspan class="i">λ</tspan>₂(<tspan class="i">x</tspan>, <tspan class="i">y</tspan>)</text>
+          <text x="120" y="246" class="t1">初始輪廓</text>
+          <text x="120" y="271" class="t2">作為演化起點</text>
+          <text x="120" y="330" class="t1">表皮遮罩</text>
+          <text x="120" y="355" class="t2">限制演化範圍</text>
+          <text x="380" y="300" class="t1">Chan–Vese 演化</text>
+          <text x="380" y="396" class="t1">區塊影像分割結果</text>
+          <text x="120" y="480" class="t1">真值遮罩</text>
+          <text x="120" y="505" class="t2">僅用於計算損失</text>
+          <text x="380" y="492" class="t1">戴斯損失</text>
+          <text x="380" y="577" class="t1">反向傳播</text>
+          <text x="380" y="604" class="t2">更新 U-Net 權重</text>
+          <text x="380" y="707" class="t1">達停止條件？</text>
+          <text x="555" y="707" class="t2">否</text>
+          <text x="380" y="775" class="t2">是</text>
+          <text x="380" y="827" class="t1">結束</text>
         </g>
         <g class="t" data-l="en">
-          <text x="120" y="55" class="t1">Image patch</text>
-          <text x="120" y="80" class="t2">CLAHE, normalisation</text>
-          <text x="380" y="168" class="t1">Coefficient fields</text>
-          <text x="120" y="263" class="t1">Initial contour</text>
-          <text x="120" y="288" class="t2">evolution start</text>
-          <text x="120" y="346" class="t1">Epidermis mask</text>
-          <text x="120" y="371" class="t2">constrains evolution</text>
-          <text x="380" y="310" class="t1">Chan–Vese evolution</text>
-          <text x="380" y="412" class="t1">Patch segmentation</text>
-          <text x="120" y="502" class="t1">Ground-truth mask</text>
-          <text x="120" y="527" class="t2">used only for the loss</text>
-          <text x="380" y="514" class="t1">Dice loss</text>
-          <text x="610" y="266" class="t2">Backpropagate through</text>
-          <text x="610" y="288" class="t2">the evolution layer to</text>
-          <text x="610" y="310" class="t2">update U-Net weights</text>
+          <text x="120" y="50" class="t1">Image patch</text>
+          <text x="120" y="75" class="t2">CLAHE, normalisation</text>
+          <text x="380" y="153" class="t1">Coefficient fields</text>
+          <text x="380" y="183" class="t2"><tspan class="i">μ</tspan>(<tspan class="i">x</tspan>, <tspan class="i">y</tspan>), <tspan class="i">ν</tspan>(<tspan class="i">x</tspan>, <tspan class="i">y</tspan>),</text>
+          <text x="380" y="208" class="t2"><tspan class="i">λ</tspan>₁(<tspan class="i">x</tspan>, <tspan class="i">y</tspan>), <tspan class="i">λ</tspan>₂(<tspan class="i">x</tspan>, <tspan class="i">y</tspan>)</text>
+          <text x="120" y="246" class="t1">Initial contour</text>
+          <text x="120" y="271" class="t2">evolution start</text>
+          <text x="120" y="330" class="t1">Epidermis mask</text>
+          <text x="120" y="355" class="t2">constrains evolution</text>
+          <text x="380" y="300" class="t1">Chan–Vese evolution</text>
+          <text x="380" y="396" class="t1">Patch segmentation</text>
+          <text x="120" y="480" class="t1">Ground-truth mask</text>
+          <text x="120" y="505" class="t2">used only for the loss</text>
+          <text x="380" y="492" class="t1">Dice loss</text>
+          <text x="380" y="577" class="t1">Backpropagation</text>
+          <text x="380" y="604" class="t2">update U-Net weights</text>
+          <text x="380" y="706" class="t2">Stopping criterion met?</text>
+          <text x="555" y="706" class="t2">No</text>
+          <text x="380" y="775" class="t2">Yes</text>
+          <text x="380" y="827" class="t1">End</text>
         </g>
       </svg>
-      </div>
-      <figcaption><span data-l="zh">方法流程：U-Net 預測係數場，經可微分 Chan–Vese 演化得到分割結果，以戴斯損失端到端訓練。</span><span data-l="en">Overview: the U-Net predicts coefficient fields, a differentiable Chan–Vese evolution produces the segmentation, and the whole system is trained end-to-end with a Dice loss.</span></figcaption>
+      <figcaption><span data-l="zh">方法流程：U-Net 預測係數場，經可微分 Chan–Vese 演化得到分割結果，以戴斯損失反向傳播更新 U-Net，重複至達停止條件。</span><span data-l="en">Overview: the U-Net predicts coefficient fields, a differentiable Chan–Vese evolution produces the segmentation, and the Dice loss is backpropagated to update the U-Net until the stopping criterion is met.</span></figcaption>
     </figure>
     <ol class="steps">
       <li>
@@ -202,27 +243,187 @@
     </ol>
   </div>
 
+  <!-- ② 處理流程 -->
+  <h3 class="rx-h"><span class="rx-no">2</span><span data-l="zh">從原始影像到分割結果</span><span data-l="en">From raw image to segmentation</span></h3>
+  <ol class="rx-pipe">
+    <li>
+      <div class="rx-pipe-imgs four">
+        <figure><img src="img/research/data-green.webp" alt="" loading="lazy"><figcaption><span data-l="zh">綠色通道</span><span data-l="en">Green channel</span></figcaption></figure>
+        <figure><img src="img/research/data-init.webp" alt="" loading="lazy"><figcaption><span data-l="zh">初始輪廓</span><span data-l="en">Initial contour</span></figcaption></figure>
+        <figure><img src="img/research/data-epi.webp" alt="" loading="lazy"><figcaption><span data-l="zh">表皮遮罩</span><span data-l="en">Epidermis mask</span></figcaption></figure>
+        <figure><img src="img/research/data-gt.webp" alt="" loading="lazy"><figcaption><span data-l="zh">真值</span><span data-l="en">Ground truth</span></figcaption></figure>
+      </div>
+      <div class="rx-pipe-text">
+        <h4><span data-l="zh">資料與困難</span><span data-l="en">Data and difficulty</span></h4>
+        <p><span data-l="zh">免疫螢光影像，每張寬達數千像素。神經纖維只有幾個像素寬（連通元件中位數 14 像素），同一張影像內的亮度又不均勻，全域門檻或全域參數都很難同時顧到亮處與暗處。</span><span data-l="en">Immunofluorescence images several thousand pixels wide. Fibres are only a few pixels wide (median connected component: 14 pixels) and brightness varies within an image, so no single global threshold or parameter set fits both bright and dim regions.</span></p>
+      </div>
+    </li>
+    <li>
+      <div class="rx-pipe-imgs two">
+        <figure><img src="img/research/pre-raw.webp" alt="" loading="lazy"><figcaption><span data-l="zh">原始</span><span data-l="en">Raw</span></figcaption></figure>
+        <figure><img src="img/research/pre-clahe.webp" alt="" loading="lazy"><figcaption>CLAHE</figcaption></figure>
+      </div>
+      <div class="rx-pipe-text">
+        <h4><span data-l="zh">前處理：CLAHE 與標準化</span><span data-l="en">Preprocessing: CLAHE and standardisation</span></h4>
+        <p><span data-l="zh">CLAHE 在 8 × 8 的網格內各自做直方圖等化，拉高局部對比，同時限制雜訊放大；再以整個訓練集的平均與標準差標準化。拿掉標準化，DSC 會掉 8.6 個百分點：資料項 (I − c)² 的尺度失控，輪廓過度收縮。</span><span data-l="en">CLAHE equalises histograms within an 8 × 8 grid, raising local contrast while capping noise amplification; intensities are then standardised with training-set statistics. Removing standardisation costs 8.6 DSC points: the data terms (I − c)² lose their scale and the contour over-shrinks.</span></p>
+      </div>
+    </li>
+    <li>
+      <div class="rx-pipe-imgs one">
+        <figure><img src="img/research/tiling.webp" alt="" loading="lazy"></figure>
+      </div>
+      <div class="rx-pipe-text">
+        <h4><span data-l="zh">切成 64 × 64 區塊</span><span data-l="en">Tiling into 64 × 64 patches</span></h4>
+        <p><span data-l="zh">只保留表皮範圍內的區塊。區塊內的背景比整張影像均勻得多（背景亮度標準差 4.8 對 10.4），讓 Chan–Vese 的「前景／背景各一個平均值」假設在局部成立。</span><span data-l="en">Only patches inside the epidermis are kept. Background within a patch is far more uniform than across the image (background s.d. 4.8 vs 10.4), so Chan–Vese's one-mean-per-region assumption holds locally.</span></p>
+      </div>
+    </li>
+    <li>
+      <div class="rx-pipe-imgs four fields">
+        <figure><img src="img/research/field-mu.webp" alt="" loading="lazy"><figcaption>μ(x,y)</figcaption></figure>
+        <figure><img src="img/research/field-nu.webp" alt="" loading="lazy"><figcaption>ν(x,y)</figcaption></figure>
+        <figure><img src="img/research/field-l1.webp" alt="" loading="lazy"><figcaption>λ₁(x,y)</figcaption></figure>
+        <figure><img src="img/research/field-l2.webp" alt="" loading="lazy"><figcaption>λ₂(x,y)</figcaption></figure>
+      </div>
+      <div class="rx-pipe-text">
+        <h4><span data-l="zh">U-Net 預測四個係數場</span><span data-l="en">U-Net predicts four coefficient fields</span></h4>
+        <p><span data-l="zh">μ 控制平滑、ν 向內收縮、λ₁ 把不像前景的推出去、λ₂ 把像前景的納進來。網路學到的 λ₂ 只在真正的神經上變大（最大值達原本上界的 42 倍），所以每個位置可以自己決定要收縮還是擴張。</span><span data-l="en">μ smooths, ν shrinks inward, λ₁ pushes out what doesn't look like foreground, λ₂ pulls in what does. The learned λ₂ grows only on real nerves (up to 42× the original upper bound), so each location decides for itself whether to shrink or expand.</span></p>
+      </div>
+    </li>
+    <li>
+      <div class="rx-pipe-imgs evo">
+        <figure><img src="img/research/evo-img.webp" alt="" loading="lazy"><figcaption><span data-l="zh">區塊影像</span><span data-l="en">Patch</span></figcaption></figure>
+        <figure class="rx-evo"><img id="rx-evo-img" src="img/research/evo-s00.webp" alt="" loading="lazy"><figcaption><span data-l="zh">第 </span><span data-l="en">Step </span><b id="rx-evo-step">0</b><span data-l="zh"> 步</span> · DSC <b id="rx-evo-dsc">55.2%</b></figcaption></figure>
+      </div>
+      <div class="rx-pipe-text">
+        <h4><span data-l="zh">30 步可微分水平集演化</span><span data-l="en">30-step differentiable level-set evolution</span></h4>
+        <p><span data-l="zh">從初始輪廓出發，每一步依係數場更新水平集函數 φ。整個演化寫成 PyTorch 層，戴斯損失的梯度可以穿過 30 步回傳到 U-Net。黃色為正確、紅色為漏檢、綠色為誤檢。</span><span data-l="en">Starting from the initial contour, each step updates the level-set function φ using the coefficient fields. The whole evolution is a PyTorch layer, so the Dice-loss gradient flows back through all 30 steps to the U-Net. Yellow: correct, red: missed, green: false positive.</span></p>
+      </div>
+    </li>
+    <li>
+      <div class="rx-pipe-imgs one">
+        <svg class="rx-gauss" viewBox="0 0 320 120" role="img" aria-label="高斯加權拼接示意 Gaussian-weighted stitching">
+          <rect x="10" y="78" width="180" height="22" class="pb"/>
+          <rect x="130" y="78" width="180" height="22" class="pb"/>
+          <path class="g1" d="M10 78 C 60 78, 70 20, 100 20 S 140 78, 190 78"/>
+          <path class="g2" d="M130 78 C 180 78, 190 20, 220 20 S 260 78, 310 78"/>
+          <text x="100" y="114" text-anchor="middle">A</text><text x="220" y="114" text-anchor="middle">B</text>
+        </svg>
+      </div>
+      <div class="rx-pipe-text">
+        <h4><span data-l="zh">高斯加權拼回原圖</span><span data-l="en">Gaussian-weighted stitching</span></h4>
+        <p><span data-l="zh">相鄰區塊有重疊。區塊邊緣的預測比較不可靠，所以重疊處以離區塊中心的距離做高斯加權（σ = 10 像素），中心的權重高、邊緣低，避免接縫。</span><span data-l="en">Neighbouring patches overlap. Predictions near a patch edge are less reliable, so overlaps are blended with Gaussian weights by distance from each patch centre (σ = 10 pixels), avoiding visible seams.</span></p>
+      </div>
+    </li>
+  </ol>
+
+  <!-- ③ 互動 demo -->
+  <h3 class="rx-h"><span class="rx-no">3</span><span data-l="zh">自己調調看：Chan–Vese 演化 demo</span><span data-l="en">Try it: Chan–Vese evolution demo</span></h3>
+  <p class="muted">
+    <span data-l="zh">這是在瀏覽器裡即時運算的 Chan–Vese 演化，更新式和論文相同。影像是合成的：左暗右亮，模擬真實影像的亮度不均，右側還有幾個亮斑。</span>
+    <span data-l="en">A Chan–Vese evolution computed live in your browser, using the same update rule as the thesis. The image is synthetic: dark on the left and bright on the right to mimic uneven brightness, with a few bright blobs on the right.</span>
+  </p>
+
+  <div class="rx-demo" id="cv-demo">
+    <div class="rx-demo-presets">
+      <span class="muted"><span data-l="zh">試試看：</span><span data-l="en">Try:</span></span>
+      <button class="btn" data-preset="global"><span data-l="zh">全域固定係數</span><span data-l="en">Global fixed coefficients</span></button>
+      <button class="btn" data-preset="pixel"><span data-l="zh">逐像素係數場</span><span data-l="en">Per-pixel fields</span></button>
+      <button class="btn" data-preset="flip"><span data-l="zh">把係數場翻轉</span><span data-l="en">Flip the fields</span></button>
+      <button class="btn" data-preset="collapse"><span data-l="zh">讓輪廓塌陷</span><span data-l="en">Make it collapse</span></button>
+    </div>
+
+    <div class="rx-demo-main">
+      <div class="rx-demo-view">
+        <div class="rx-canvases">
+          <figure><canvas id="cv-canvas-img" width="128" height="128"></canvas><figcaption><span data-l="zh">影像與輪廓</span><span data-l="en">Image and contour</span></figcaption></figure>
+          <figure><canvas id="cv-canvas-cmp" width="128" height="128"></canvas><figcaption><span data-l="zh">與真值對照</span><span data-l="en">Against ground truth</span></figcaption></figure>
+        </div>
+        <div class="rx-progress"><div id="cv-bar"></div></div>
+        <div class="rx-readout">
+          <button class="btn btn-primary" id="cv-play"><span class="when-stop"><span data-l="zh">▶ 播放</span><span data-l="en">▶ Play</span></span><span class="when-play"><span data-l="zh">⏸ 暫停</span><span data-l="en">⏸ Pause</span></span></button>
+          <button class="btn" id="cv-reset"><span data-l="zh">↺ 重設</span><span data-l="en">↺ Reset</span></button>
+          <span><span data-l="zh">第 </span><span data-l="en">Step </span><b id="cv-step">0</b> / 40<span data-l="zh"> 步</span></span>
+          <span>DSC <b id="cv-dice">–</b></span>
+        </div>
+      </div>
+
+      <div class="rx-demo-ctrl">
+        <fieldset class="rx-modes">
+          <legend><span data-l="zh">係數</span><span data-l="en">Coefficients</span></legend>
+          <label><input type="radio" name="cv-mode" value="global" checked> <span data-l="zh">全域純量（傳統做法）</span><span data-l="en">Global scalars (classical)</span></label>
+          <label><input type="radio" name="cv-mode" value="pixel"> <span data-l="zh">逐像素係數場</span><span data-l="en">Per-pixel fields</span></label>
+          <label><input type="radio" name="cv-mode" value="flip"> <span data-l="zh">逐像素，但上下左右翻轉</span><span data-l="en">Per-pixel, flipped</span></label>
+        </fieldset>
+
+        <div class="rx-sliders only-global">
+          <label>μ <span data-l="zh">平滑</span><span data-l="en">smoothing</span><output id="cv-mu-v"></output><input id="cv-mu" type="range" min="0" max="1" step="0.05" value="0.2"></label>
+          <label>ν <span data-l="zh">收縮</span><span data-l="en">shrinking</span><output id="cv-nu-v"></output><input id="cv-nu" type="range" min="0" max="2" step="0.05" value="0"></label>
+          <label>λ₁ <span data-l="zh">推出非前景</span><span data-l="en">push out</span><output id="cv-l1-v"></output><input id="cv-l1" type="range" min="0" max="4" step="0.1" value="1"></label>
+          <label>λ₂ <span data-l="zh">納入前景</span><span data-l="en">pull in</span><output id="cv-l2-v"></output><input id="cv-l2" type="range" min="0" max="4" step="0.1" value="1"></label>
+        </div>
+        <div class="rx-sliders only-pixel">
+          <label><span data-l="zh">額外加上均勻的 ν</span><span data-l="en">Extra uniform ν</span><output id="cv-nuadd-v"></output><input id="cv-nuadd" type="range" min="0" max="10" step="0.5" value="0"></label>
+        </div>
+
+        <div class="rx-fields">
+          <figure><canvas id="cv-f-mu" width="128" height="128"></canvas><figcaption>μ</figcaption></figure>
+          <figure><canvas id="cv-f-nu" width="128" height="128"></canvas><figcaption>ν</figcaption></figure>
+          <figure><canvas id="cv-f-l1" width="128" height="128"></canvas><figcaption>λ₁</figcaption></figure>
+          <figure><canvas id="cv-f-l2" width="128" height="128"></canvas><figcaption>λ₂</figcaption></figure>
+        </div>
+        <p class="rx-fields-cap muted"><span data-l="zh">目前的四個係數場（白 → 紫，共用色階，最大值 </span><span data-l="en">Current coefficient fields (white → purple, shared scale, max </span><b id="cv-fmax"></b>）</p>
+      </div>
+    </div>
+
+    <div class="rx-demo-notes">
+      <div class="only-global"><span data-l="zh"><b>全域純量：</b>右側背景本身就比左側的神經亮，同一組係數不可能兩邊都對——不是把右半邊整片吃進來，就是把左邊的暗神經丟掉。不管滑桿怎麼調，跑完 40 步的 DSC 都不超過約 41%（逐像素係數場約 68%）。</span><span data-l="en"><b>Global scalars:</b> the background on the right is brighter than the nerves on the left, so one set of coefficients can't be right on both sides — it either floods the right half or drops the dim nerves on the left. However you move the sliders, DSC after 40 steps stays below about 41% (per-pixel fields reach about 68%).</span></div>
+      <div class="only-pixel"><span data-l="zh"><b>逐像素係數場：</b>λ₂ 只在神經附近變大，λ₁ 與 ν 在背景變大，每個位置各自決定要擴張還是收縮。再把「均勻 ν」拉大，收縮壓過了 λ₂，輪廓會連同神經一起逐漸消失——這正是論文中實際分析過的失效機制。</span><span data-l="en"><b>Per-pixel fields:</b> λ₂ grows only near nerves while λ₁ and ν grow on the background, so each location decides whether to expand or shrink. Raise the “extra uniform ν” and shrinking overpowers λ₂: the contour gradually disappears along with the nerves — the same failure mode analysed in the thesis.</span></div>
+      <div class="only-flip"><span data-l="zh"><b>翻轉：</b>數值完全一樣，只是位置對不上，結果就大幅變差。論文用同樣的實驗證明：效能來自係數場與影像的「空間對位」，而不是參數比較多。</span><span data-l="en"><b>Flipped:</b> exactly the same values, just in the wrong places — and the result falls apart. The thesis uses the same experiment to show that performance comes from spatial alignment between fields and image, not from having more parameters.</span></div>
+      <p class="muted rx-small"><span data-l="zh">說明：demo 裡的逐像素係數場是依合成真值的位置產生的示意，用來呈現網路學到的配置，不是網路的實際輸出。</span><span data-l="en">Note: the per-pixel fields here are generated from the synthetic ground truth to illustrate what the network learns; they are not actual network outputs.</span></p>
+    </div>
+  </div>
+
+  <!-- ④ 關鍵發現 -->
+  <h3 class="rx-h"><span class="rx-no">4</span><span data-l="zh">關鍵發現</span><span data-l="en">Key findings</span></h3>
+  <div class="rx-charts">
+    <figure class="rx-chart">
+      <h4><span data-l="zh">係數的空間自由度，遠比網路架構重要</span><span data-l="en">Spatial freedom of the coefficients matters far more than architecture</span></h4>
+      <div id="rx-ladder" class="rx-svg"></div>
+      <figcaption class="muted"><span data-l="zh">左：係數場解析度由全域純量逐級提升到逐像素，全圖 DSC 一路上升 16.87 個百分點。右：七種從零訓練的網路架構，參數量相差 155 倍，DSC 全距只有 0.56。</span><span data-l="en">Left: raising coefficient resolution from a global scalar to per-pixel lifts full-image DSC by 16.87 points. Right: seven architectures trained from scratch, spanning 155× in parameters, differ by only 0.56.</span></figcaption>
+    </figure>
+    <figure class="rx-chart">
+      <h4><span data-l="zh">打亂對位，比完全不看影像還差</span><span data-l="en">Breaking alignment is worse than ignoring the image</span></h4>
+      <div id="rx-flip" class="rx-svg"></div>
+      <figcaption class="muted"><span data-l="zh">推論時改變送入演化層的係數場（區塊影像 DSC，五折平均）。翻轉後的數值分布與原樣完全相同，結果卻低於完全不看影像的固定係數。</span><span data-l="en">Changing the coefficient fields fed to the evolution layer at inference (patch-level DSC, five-fold mean). The flipped fields have exactly the same value distribution, yet score below fixed coefficients that ignore the image entirely.</span></figcaption>
+    </figure>
+  </div>
+
   <h4><span data-l="zh">重點成果</span><span data-l="en">Key results</span></h4>
   <p class="muted">
     <span data-l="zh">439 張免疫螢光影像，其中 438 張以五折交叉驗證評估整張影像的分割結果。</span>
     <span data-l="en">439 immunofluorescence images; 438 evaluated on full images with five-fold cross-validation.</span>
   </p>
   <ul class="bullets">
-    <li><span data-l="zh">DSC 較固定參數 Chan–Vese 方法提升 18.71 個百分點，較相同架構的 U-Net 提升 1.00 個百分點，兩者皆達統計顯著。</span><span data-l="en">DSC improved by 18.71 points over fixed-parameter Chan–Vese and by 1.00 point over a same-architecture U-Net, both statistically significant.</span></li>
-    <li><span data-l="zh">係數場的空間自由度是效能主因：由全域純量提升至逐像素，DSC 提升 16.52 個百分點；而七種網路架構參數量相差 155 倍，DSC 全距僅 0.49。</span><span data-l="en">Spatial freedom of the coefficients drives performance: scalar → per-pixel adds 16.52 DSC points, whereas seven architectures spanning 155× in parameter count differ by only 0.49.</span></li>
-    <li><span data-l="zh">移除係數的值域上界使 DSC 提升 3.09 個百分點。</span><span data-l="en">Removing the upper bound on the coefficients added 3.09 DSC points.</span></li>
-    <li><span data-l="zh">以空間翻轉實驗證明效能來自係數場與影像的空間對位，而非參數數量。</span><span data-l="en">A spatial-flip experiment showed the gain comes from spatial alignment between coefficient fields and the image, not from parameter count.</span></li>
-    <li><span data-l="zh">演化層推論每個 64 × 64 區塊約 0.45 ms；最輕量的變體只需主方法 1/88 的參數量，效能差距在訓練變異範圍內。</span><span data-l="en">The evolution layer adds about 0.45 ms per 64 × 64 patch; the lightest variant uses 1/88 of the parameters with performance within training noise.</span></li>
+    <li><span data-l="zh">DSC 較固定參數 Chan–Vese 方法提升 18.93 個百分點，較相同架構的 U-Net 提升 1.07 個百分點，兩者皆達統計顯著。</span><span data-l="en">DSC improved by 18.93 points over fixed-parameter Chan–Vese and by 1.07 points over a same-architecture U-Net, both statistically significant.</span></li>
+    <li><span data-l="zh">移除係數的值域上界使 DSC 提升 3.14 個百分點。</span><span data-l="en">Removing the upper bound on the coefficients added 3.14 DSC points.</span></li>
+    <li><span data-l="zh">演化層推論每個 64 × 64 區塊約 0.45 ms；最輕量的變體只需主方法 1/88 的參數量，DSC 只低 0.50 個百分點。</span><span data-l="en">The evolution layer adds about 0.45 ms per 64 × 64 patch; the lightest variant uses 1/88 of the parameters and is only 0.50 DSC points lower.</span></li>
   </ul>
 
   <details class="rigor">
     <summary><span data-l="zh">研究嚴謹度</span><span data-l="en">Methodological rigour</span></summary>
     <ul class="bullets">
-      <li><span data-l="zh">以六次獨立訓練量測訓練變異（全圖 DSC 標準差 0.150），訂定 0.45 個百分點的判讀門檻，避免把隨機種子造成的差異誤判為方法優劣。</span><span data-l="en">Measured run-to-run variance from six independent trainings (DSC s.d. 0.150) and set a 0.45-point decision threshold, so seed noise is not mistaken for a real improvement.</span></li>
-      <li><span data-l="zh">發現同設定僅種子不同的兩個模型，配對 t 檢定即可達 p = 9.8×10⁻⁵，因此架構層級的主張改以多種子比較為準。</span><span data-l="en">Showed that two identical configurations differing only in seed reach p = 9.8×10⁻⁵ under a paired t-test, and therefore based architecture-level claims on multi-seed comparisons.</span></li>
-      <li><span data-l="zh">主動報告負面結果：測試時增強、係數場平滑等嘗試皆未奏效，並分析其原因。</span><span data-l="en">Reported negative results (test-time augmentation, coefficient smoothing) with root-cause analysis.</span></li>
+      <li><span data-l="zh">以 438 張影像的配對檢定判斷方法優劣（DSC 等指標用配對 t 檢定，重尾的 SEB、H95 用中位數與 Wilcoxon 檢定），並一律報告差值，而不只報告是否顯著。</span><span data-l="en">Compared methods with paired tests over 438 images (paired t-tests for DSC and similar metrics; medians and Wilcoxon tests for the heavy-tailed SEB and H95), always reporting effect sizes rather than significance alone.</span></li>
+      <li><span data-l="zh">發現設定完全相同、僅隨機種子不同的模型，以影像為樣本的配對檢定在六組中仍有四組顯著；因此以三個隨機種子重複驗證關鍵比較，並對 0.4 個百分點以內的差異保守解讀。</span><span data-l="en">Found that identical configurations differing only in random seed still reach significance in four of six paired tests, so key comparisons were repeated with three seeds and differences under 0.4 points are interpreted conservatively.</span></li>
     </ul>
   </details>
+
+  <!-- ⑤ 沒成功的嘗試 -->
+  <h3 class="rx-h"><span class="rx-no">5</span><span data-l="zh">沒成功的嘗試</span><span data-l="en">What didn't work</span></h3>
+  <ul class="rx-fails">
+    <li><span data-l="zh"><b>測試時增強（TTA）反而變差。</b>翻轉影像再平均，對一般分割網路常有幫助；但只做左右翻轉，DSC 就由 70.39% 降到 65.31%。訓練時沒有做資料增強，網路對沒看過的朝向會輸出錯位的係數場，演化就往錯的方向走。</span><span data-l="en"><b>Test-time augmentation made things worse.</b> Averaging over flipped inputs usually helps segmentation networks, but a single horizontal flip dropped DSC from 70.39% to 65.31%. Without training-time augmentation, the network outputs misaligned coefficient fields for orientations it has never seen, and the evolution heads the wrong way.</span></li>
+    <li><span data-l="zh"><b>平滑係數場沒有幫助。</b>直覺上平滑的係數比較穩定，但網格化、高斯平滑與拼接後再平滑三種做法都沒有改善：平滑會模糊係數場與影像之間的逐像素對位，而那正是效能的來源。</span><span data-l="en"><b>Smoothing the coefficient fields didn't help.</b> Smoother coefficients sound more stable, yet coarse grids, Gaussian smoothing and post-stitching smoothing all failed to improve results: smoothing blurs the pixel-level alignment between fields and image, which is exactly where performance comes from.</span></li>
+    <li><span data-l="zh"><b>ImageNet 預訓練編碼器一致較差</b>（低 3.9 至 4.5 個百分點）。自然影像的特徵和只有幾個像素寬的螢光神經差距太大。</span><span data-l="en"><b>ImageNet-pretrained encoders were consistently worse</b> (3.9–4.5 points lower): natural-image features are too far from fluorescent fibres a few pixels wide.</span></li>
+  </ul>
 
   <ul class="tags">
     <li data-l="zh">醫學影像分割</li><li data-l="zh">主動輪廓模型</li><li data-l="zh">Chan–Vese</li><li data-l="zh">水平集方法</li><li data-l="zh">可微分 PDE</li><li data-l="zh">深度學習</li>
@@ -241,14 +442,50 @@
           <h3><span data-l="zh">雙北 GPS Art Studio</span><span data-l="en">Taipei GPS Art Studio</span></h3>
           <span class="badge"><span data-l="zh">已上線</span><span data-l="en">Live</span></span>
         </div>
-        <p data-l="zh">結合長跑興趣做的跑步工具：把簡筆畫變成能真的跑出來的城市路線。路線自動貼合真實街道，跑步時有中文語音導航，跑錯或抄捷徑會自動接回。以中國郵差問題排出重複最少的跑法；在瀏覽器裡自寫 A* 路由避開大馬路，號誌路口減少 30–40%。純前端、不需後端，已在雙北實際跑過。</p>
-        <p data-l="en">A running tool born from my love of distance running: it turns a doodle into a city route you can actually run. Routes snap to real streets, and voice navigation in Chinese guides you while running, rejoining automatically after a wrong turn or shortcut. It solves the Chinese Postman Problem to minimise repeated segments, and a custom in-browser A* router avoids major roads, cutting signalised crossings by 30–40%. Fully client-side, and tested on real runs in Taipei.</p>
+        <p data-l="zh"><b>起因：</b>我想用跑步軌跡在地圖上畫圖（GPS Art），但現有工具只能自己一個路口一個路口地點，畫出來不像，跑的時候又容易迷路。<br>所以我做了這個網頁：選一個圖案，程式會在雙北街道裡找出最像的位置，自動生成跑得出來的路線，跑步時再用中文語音導航。純前端、不需要伺服器，已在雙北實際跑過。</p>
+        <p data-l="en"><b>Why:</b> I wanted to draw pictures with my running tracks (GPS Art), but existing tools make you click every junction by hand, the results rarely look right, and the routes are easy to get lost on.<br>So I built this web app: pick a shape, and it searches Taipei's streets for where that shape fits best, generates a runnable route, then guides you with Chinese voice navigation. Fully client-side, and tested on real runs in Taipei.</p>
         <ul class="tags"><li>JavaScript</li><li>Leaflet</li><li>OpenStreetMap</li><li data-l="zh">圖論演算法</li><li data-l="en">Graph algorithms</li><li>Geolocation / Web Speech</li><li>Python</li></ul>
         <div class="links">
           <a class="btn btn-primary" href="https://zzzixun.github.io/gps-art/" target="_blank" rel="noopener"><span data-l="zh">線上使用</span><span data-l="en">Try it</span></a>
           <a class="btn" href="https://github.com/zzzixun/gps-art" target="_blank" rel="noopener">GitHub</a>
+          <a class="btn" href="https://github.com/zzzixun/city-shapes" target="_blank" rel="noopener"><span data-l="zh">研究延伸</span><span data-l="en">Research spin-off</span></a>
         </div>
       </div>
+      <details class="rigor story">
+        <summary><span data-l="zh">開發歷程：遇到的問題與解法</span><span data-l="en">How it was built: problems and solutions</span></summary>
+        <ol class="story-list">
+          <li>
+            <b><span data-l="zh">圖案一貼到街道就變形</span><span data-l="en">Shapes distort once snapped to streets</span></b>
+            <p data-l="zh">一般的路線規劃只找最短路，會抄捷徑把圖案切掉。我在瀏覽器裡自己寫 A* 路由，成本加上「離圖案多遠」的懲罰，讓路線寧可多繞也要貼著圖案；有眼睛、嘴巴的圖案則每一筆各自描線，再接成一條路線。</p>
+            <p data-l="en">Ordinary routing takes shortcuts that cut through the shape. I wrote an in-browser A* router whose cost penalises distance from the shape, so the route detours rather than leaves the outline; shapes with eyes and mouths are traced stroke by stroke and then joined.</p>
+          </li>
+          <li>
+            <b><span data-l="zh">不知道圖要放在哪裡才像</span><span data-l="en">Where should the shape go?</span></b>
+            <p data-l="zh">先建一張「每個點離最近街道多遠」的查詢表，快速粗搜位置 × 角度 × 大小，再把最好的幾個候選真的沿街道算出路線，用漏畫、亂繞、尖角三項評分。之後再用網格空間索引加速 1.5 倍、結果完全不變；並把全大台北 132 個地點、33 種圖案掃過一遍，列出各圖案最像的前 3 名。</p>
+            <p data-l="en">A lookup table of distance-to-nearest-street lets me coarse-search position × angle × size quickly; the best candidates are then routed for real and scored on missed segments, wandering and lost corners. A grid spatial index later made it 1.5× faster with identical results, and I scanned 132 locations × 33 shapes across Taipei to recommend the top 3 spots for each shape.</p>
+          </li>
+          <li>
+            <b><span data-l="zh">圖案每條線都要跑，重複路段很多</span><span data-l="en">Every line must be run, causing lots of repeats</span></b>
+            <p data-l="zh">這其實是圖論的中國郵差問題：把奇數度的路口兩兩配對、補上最短的重複路段，再用 Hierholzer 演算法排成一筆畫。熱門路線最多省下 0.8 km。筆畫之間的連接線也優先走已經畫過的街道，突兀的直線少了約 25%。</p>
+            <p data-l="en">This is the Chinese Postman Problem: pair odd-degree junctions, add the shortest repeated segments, then order everything into one stroke with Hierholzer's algorithm, saving up to 0.8 km on popular routes. Connectors between strokes prefer streets already drawn, cutting stray straight lines by about 25%.</p>
+          </li>
+          <li>
+            <b><span data-l="zh">跑步中導航不可靠</span><span data-l="en">Navigation while running was unreliable</span></b>
+            <p data-l="zh">GPS 在人行道上飄到對面，就被當成「左轉再右轉」：把這種成對的假轉彎合併，轉彎提示少了約 15%。跑錯路或抄捷徑時，依目前位置和方向重排還沒跑的部分。手機把網頁放到背景會暫停定位：回到前景自動重新定位，每 5 秒存一次進度，分頁被關掉也能接著跑。</p>
+            <p data-l="en">GPS drifting across the street looked like “turn left, then right”; merging these fake turn pairs removed about 15% of prompts. After a wrong turn or shortcut, the rest of the route is re-planned from your position and heading. Phones pause web geolocation in the background, so the app restarts tracking on return and saves progress every 5 s to resume even if the tab is killed.</p>
+          </li>
+          <li>
+            <b><span data-l="zh">沒有後端，又想在別的城市也能用</span><span data-l="en">No backend, but usable beyond Taipei</span></b>
+            <p data-l="zh">用 Python 從 OpenStreetMap 預先切好雙北和鹿港的步行路網（906 塊、30 MB），放在 GitHub Pages；其他地方即時向 4 台 Overpass 伺服器輪流下載，一台掛了就換下一台。</p>
+            <p data-l="en">Python pre-builds walking networks for Taipei and Lukang from OpenStreetMap (906 tiles, 30 MB) served from GitHub Pages; anywhere else is fetched on demand, rotating across four Overpass servers when one fails.</p>
+          </li>
+          <li>
+            <b><span data-l="zh">研究延伸：怎樣才算「像」？</span><span data-l="en">Research spin-off: what makes a route look like something?</span></b>
+            <p data-l="zh">另開 <a href="https://github.com/zzzixun/city-shapes" target="_blank" rel="noopener">city-shapes</a> 實驗：先用街廓面積算重疊率（IoU 0.75–0.93），再訓練 CNN 當評審（Quick, Draw! 24 類、正確率 86%），但數字好、肉眼看卻不像。查文獻後改成「沿線貼合」，分類器認對的比例從 13/24 提高到 15/23，網頁版現在用的就是這個方法。這和我碩論的主動輪廓（讓曲線貼合邊界）是同一類問題。</p>
+            <p data-l="en">In <a href="https://github.com/zzzixun/city-shapes" target="_blank" rel="noopener">city-shapes</a> I first fitted shapes by city-block area (IoU 0.75–0.93) and trained a CNN judge (Quick, Draw!, 24 classes, 86% accuracy), yet results scored well but didn't look right. After reading the literature I switched to line-based fitting, which the classifier recognised more often (15/23 vs 13/24); the web app now uses this method. It's the same family of problem as the active contours in my thesis: fitting a curve to boundaries.</p>
+          </li>
+        </ol>
+      </details>
     </article>
     <article class="card">
       <div class="card-head">
@@ -395,6 +632,9 @@
   <p>© 2026 <span data-l="zh">尤梓薰</span><span data-l="en">Yu Tzu-Hsun</span> · <a href="https://github.com/zzzixun" target="_blank" rel="noopener">GitHub</a></p>
 </footer>
 
+<script src="js/demo-data.js"></script>
+<script src="js/cv-demo.js"></script>
+<script src="js/research.js"></script>
 <script src="main.js"></script>
 </body>
 </html>
